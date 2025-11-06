@@ -416,3 +416,18 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Arduino / PlatformIO / build
+.pio/
+.build/
+cmake-build-*/
+.vscode/
+*.elf
+*.hex
+
+# Logs & local data
+logs/
+*.log
+
+# IDE miscellany
+.idea/
