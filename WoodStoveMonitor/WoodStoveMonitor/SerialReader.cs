@@ -15,6 +15,7 @@ namespace WoodStoveLogger
       {
         NewLine = "\n",
         ReadTimeout = 500,
+        WriteTimeout = 500,
         DtrEnable = true,
         RtsEnable = true
       };
@@ -34,6 +35,21 @@ namespace WoodStoveLogger
       IsRunning = false;
       _port.DataReceived -= OnData;
       if (_port.IsOpen) _port.Close();
+    }
+
+    public void WriteLine(string line)
+    {
+      try
+      {
+        if (_port != null && _port.IsOpen)
+        {
+          _port.WriteLine(line);
+        }
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"[SERIAL WRITE ERROR] {ex.Message}");
+      }
     }
 
     private void OnData(object? sender, SerialDataReceivedEventArgs e)

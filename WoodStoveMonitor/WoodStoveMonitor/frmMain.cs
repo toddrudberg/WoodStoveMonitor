@@ -5,9 +5,11 @@ using System.Threading;
 
 namespace WoodStoveMonitor
 {
-  public partial class frmWoodStoveMonitor : Form
+  public partial class frmMain : Form
   {
     private SerialReader? _reader;
+    private bool _isConnected = false;
+
     // Win32
     [DllImport("kernel32.dll")] static extern bool AllocConsole();
     [DllImport("kernel32.dll")] static extern bool FreeConsole();
@@ -15,7 +17,7 @@ namespace WoodStoveMonitor
     [DllImport("user32.dll")] static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nW, int nH, bool repaint);
     [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     const int SW_SHOW = 5;
-    public frmWoodStoveMonitor()
+    public frmMain()
     {
       InitializeComponent();
 
@@ -61,34 +63,28 @@ namespace WoodStoveMonitor
 
     private void frmWoodStoveMonitor_Load(object sender, EventArgs e)
     {
-      StartSerialMonitor();
-    }
-    private void StartSerialMonitor()
-    {
-      string portName = "COM3"; // Later we auto-detect this
-      int baud = 115200;
+      comboPorts.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
+      if (comboPorts.Items.Count > 0)
+        comboPorts.SelectedIndex = 0;
 
-      _reader = new SerialReader(portName, baud);
-      _reader.MessageReceived += OnSerialMessage;
-      _reader.Start();
-    }
+      UpdateStatus(false);
 
-    private void OnSerialMessage(string rawLine, System.Text.Json.JsonDocument? json)
-    {
-      // Ensure we update UI on UI thread
-      if (InvokeRequired)
-      {
-        BeginInvoke(new Action(() => OnSerialMessage(rawLine, json)));
-        return;
-      }
-
-      // For now, just append to a TextBox or Debug window
-      Console.WriteLine(rawLine + Environment.NewLine);
     }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     {
       _reader?.Stop();
+    }
+
+    private void btnConnect_Click(object sender, EventArgs e)
+    {
+      OnBtnConnect_Click(sender, e);
+
+    }
+
+    private void frmWoodStoveMonitor_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      Disconnect();
     }
   }
 }
