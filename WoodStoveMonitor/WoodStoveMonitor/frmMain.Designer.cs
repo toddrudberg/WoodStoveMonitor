@@ -32,6 +32,10 @@
       comboPorts = new ComboBox();
       lblStatus = new Label();
       ledConnection = new LedIndicator();
+      ledHeartBeat = new LedIndicator();
+      lblHeartBeat = new Label();
+      spPMS2_5 = new ScottPlot.WinForms.FormsPlot();
+      btnStartLogging = new Button();
       SuspendLayout();
       // 
       // btnConnect
@@ -77,17 +81,65 @@
       ledConnection.Text = "ledIndicator1";
       ledConnection.WarningColor = Color.Gold;
       // 
-      // frmWoodStoveMonitor
+      // ledHeartBeat
+      // 
+      ledHeartBeat.BlinkInterval = 400;
+      ledHeartBeat.BorderColor = Color.FromArgb(60, 60, 60);
+      ledHeartBeat.Location = new Point(301, 16);
+      ledHeartBeat.Name = "ledHeartBeat";
+      ledHeartBeat.OffColor = Color.Firebrick;
+      ledHeartBeat.OnColor = Color.LimeGreen;
+      ledHeartBeat.ShowText = false;
+      ledHeartBeat.Size = new Size(16, 16);
+      ledHeartBeat.State = LedState.Off;
+      ledHeartBeat.TabIndex = 5;
+      ledHeartBeat.TabStop = false;
+      ledHeartBeat.Text = "ledIndicator1";
+      ledHeartBeat.WarningColor = Color.Gold;
+      // 
+      // lblHeartBeat
+      // 
+      lblHeartBeat.AutoSize = true;
+      lblHeartBeat.Location = new Point(323, 17);
+      lblHeartBeat.Name = "lblHeartBeat";
+      lblHeartBeat.Size = new Size(69, 15);
+      lblHeartBeat.TabIndex = 6;
+      lblHeartBeat.Text = "Arduino HB";
+      // 
+      // spPMS2_5
+      // 
+      spPMS2_5.DisplayScale = 1F;
+      spPMS2_5.Location = new Point(33, 135);
+      spPMS2_5.Name = "spPMS2_5";
+      spPMS2_5.Size = new Size(732, 314);
+      spPMS2_5.TabIndex = 7;
+      // 
+      // btnStartLogging
+      // 
+      btnStartLogging.Enabled = false;
+      btnStartLogging.Location = new Point(54, 455);
+      btnStartLogging.Name = "btnStartLogging";
+      btnStartLogging.Size = new Size(117, 23);
+      btnStartLogging.TabIndex = 8;
+      btnStartLogging.Text = "Start Logging";
+      btnStartLogging.UseVisualStyleBackColor = true;
+      btnStartLogging.Click += btnStartLogging_Click;
+      // 
+      // frmMain
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
-      ClientSize = new Size(878, 429);
+      ClientSize = new Size(838, 800);
+      Controls.Add(btnStartLogging);
+      Controls.Add(spPMS2_5);
+      Controls.Add(lblHeartBeat);
+      Controls.Add(ledHeartBeat);
       Controls.Add(ledConnection);
       Controls.Add(lblStatus);
       Controls.Add(comboPorts);
       Controls.Add(btnConnect);
-      Name = "frmWoodStoveMonitor";
-      Text = "Form1";
+      Name = "frmMain";
+      Text = "Woodstove Lab";
       FormClosing += frmWoodStoveMonitor_FormClosing;
       Load += frmWoodStoveMonitor_Load;
       ResumeLayout(false);
@@ -100,5 +152,9 @@
     private ComboBox comboPorts;
     private Label lblStatus;
     private LedIndicator ledConnection;
+    private LedIndicator ledHeartBeat;
+    private Label lblHeartBeat;
+    private ScottPlot.WinForms.FormsPlot spPMS2_5;
+    private Button btnStartLogging;
   }
 }

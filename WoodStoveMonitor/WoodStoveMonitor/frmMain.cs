@@ -2,6 +2,7 @@ using Pastel;
 using System.Runtime.InteropServices;
 using WoodStoveLogger;
 using System.Threading;
+using OpenTK.Graphics.OpenGL;
 
 namespace WoodStoveMonitor
 {
@@ -9,6 +10,7 @@ namespace WoodStoveMonitor
   {
     private SerialReader? _reader;
     private bool _isConnected = false;
+    private LogData _logData = new LogData();
 
     // Win32
     [DllImport("kernel32.dll")] static extern bool AllocConsole();
@@ -69,6 +71,8 @@ namespace WoodStoveMonitor
 
       UpdateStatus(false);
 
+      InitPlot();
+
     }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -85,6 +89,25 @@ namespace WoodStoveMonitor
     private void frmWoodStoveMonitor_FormClosing(object sender, FormClosingEventArgs e)
     {
       Disconnect();
+    }
+
+    private void btnStartLogging_Click(object sender, EventArgs e)
+    {
+      if (!_logData.IsActive)
+      {
+        InitPlot();
+        _logData.Start();
+        btnStartLogging.Text = "Stop Logging";
+      }
+      else
+      {
+        _logData.Stop();
+        btnStartLogging.Text = "Start Logging";
+      }
+
+
+        UpdateStatus(_isConnected);
+
     }
   }
 }
